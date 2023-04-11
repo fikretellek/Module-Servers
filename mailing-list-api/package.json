@@ -1,5 +1,5 @@
 {
-  "name": "CYF-Coursework-Template",
+  "name": "Node-Coursework-Week4-Solution",
   "version": "1.0.0",
   "license": "CC-BY-SA-4.0",
   "description": "You must update this package",
@@ -15,6 +15,10 @@
   },
   "homepage": "https://github.com/CodeYourFuture/CYF-Coursework-Template#readme",
   "devDependencies": {
-    "jest": "^26.6.3"
+    "jest": "^26.6.3",
+    "supertest": "^6.3.2"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
   }
 }

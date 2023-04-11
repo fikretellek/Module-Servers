@@ -138,7 +138,7 @@ Some would say the more REST-ful way to manage the members of the list is to mak
 After creating your pull request in this coursework repo, try this challenge!
 
 - `GET /lists/:name/members` => return array of emails only for a list
-- `PUT /lists/:name/members/:email` => make the supplies email a member of the list
+- `PUT /lists/:name/members/:email` => make the supplied email a member of the list
 - `DELETE /lists/:name/members/:email` => remove the supplied email as a member of the list
 
 ### Sidebar PUT vs. POST
