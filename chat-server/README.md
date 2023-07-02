@@ -1,9 +1,5 @@
 # Challenge: A Chat Server
 
-### How long will this take?
-
-- 2 hours (Level 1)
-
 ## Overview: what is this challenge?
 
 In this challenge you must make an Express app which provides an API to manage a list of chat messages, in JSON format.
