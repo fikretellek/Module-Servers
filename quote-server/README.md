@@ -1,10 +1,5 @@
 # Challenge: A Quote Server
 
-## How long will this take?
-
-- 1 hour (level 1)
-- 3-4 hours (advanced level)
-
 ## Overview: what is this challenge?
 
 In this challenge you must make a server (using Node and Express) which serves quotes, in JSON form.
