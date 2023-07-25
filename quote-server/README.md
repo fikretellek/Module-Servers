@@ -92,6 +92,7 @@ Well done!
 
 ### Overview
 
+
 In this level of the challenge you will allow the user of your quotes API to _search_ your list of quotes.
 
 It should work with requests like this one:
