@@ -22,7 +22,6 @@ app.get("/quotes", function (request, response) {
 });
 
 app.get("/quotes/random", function (request, response) {
-  //const myContactsArray();
   const randomQuotes = pickFromArray(quotes);
   response.json(randomQuotes);
 });
