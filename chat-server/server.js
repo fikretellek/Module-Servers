@@ -1,4 +1,5 @@
-process.env.PORT = process.env.PORT || 9090;
+// process.env.PORT = process.env.PORT || 9090;
+process.env.PORT = process.env.PORT || 3000;
 const express = require("express");
 const cors = require("cors");
 
