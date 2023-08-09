@@ -26,13 +26,16 @@ app.get("/quotes/random", function (request, response) {
   response.json(randomQuotes);
 });
 
-app.get("/quotes/search", function(req, res) {
-  let search = quotes.filter(quote => quote.text.toLowerCase());
-  res.send(search)
+app.get("/quotes/search", function (req, res) {
+  const searchTerm = req.query.term.toLowerCase();
+  const searchResult = quotes.filter(quote => quote.text.toLowerCase().includes(searchTerm));
+
+  res.json(searchResult);
 })
 //...END OF YOUR CODE
 
-//You can use this function to pick one element at random from a given array
+//You can use this function to pick one element at random from a 
+//given array
 //example: pickFromArray([1,2,3,4]), or
 //example: pickFromArray(myContactsArray)
 //
