@@ -17,22 +17,41 @@ let nextMessageId = 1;
 
 const messages = [welcomeMessage];
 
-
+// create a new message
 app.post("/messages", function (req, res) {
-
-})
+  const newMessage = req.body;
+  newMessage.id = nextMessageId++;
+  messages.push(newMessage);
+  res.status(201).json(newMessage);
+});
 
 app.get("/messages",  function(req, res) {
-
+  res.json(messages);
 })
 
+//read messages by ID
 app.get("/messages/:id", function(req, res) {
+  const messageId = parseInt(req.params.id);
+  const message = messages.find(msg => msg.id === messageId);
 
-})
+  if (message) {
+    res.json(message);
+  } else {
+    res.status(404).json({ error: "Message Not Found" });
+  }
+});
 
 app.delete("/messages/:id", function (req, res) {
+  const messageId = parseInt(req.params.id);
+  const messageIndex = messages.findIndex(msg => msg.id === messageId);
 
-})
+  if (messageIndex !== -1) {
+    messages.slice(messageIndex,1);
+    res.status(204).send();
+  } else {
+    res.status(404).json({ error: "Message Not Found" });
+  }
+});
 
 
 
