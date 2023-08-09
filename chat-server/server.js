@@ -58,7 +58,7 @@ app.delete("/messages/:id", function (req, res) {
 //This array is our "data store".
 //We will start with one message in the array.
 //Note: messages will be lost when Glitch restarts our server.
-const messages = [welcomeMessage];
+
 
 app.get("/", function (request, response) {
   response.sendFile(__dirname + "/index.html");
