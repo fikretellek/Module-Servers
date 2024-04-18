@@ -1,32 +1,52 @@
-// server.js
-// This is where your node app starts
-
-//load the 'express' module which makes writing webservers easy
-import express from "express";
-//load the quotes JSON
-import quotes from "./quotes.json" assert { type: "json" };
+import express, { response } from "express";
 
 const app = express();
-// Now register handlers for some routes:
-//   /                  - Return some helpful welcome info (text)
-//   /quotes            - Should return all quotes (json)
-//   /quotes/random     - Should return ONE quote (json)
+
+let quotes = [];
+
+app.use(async (req, res, next) => {
+  const response = await fetch("https://api.quotable.io/quotes?limit=150");
+  const data = await response.json();
+  quotes = data.results;
+  next();
+});
+
 app.get("/", (request, response) => {
-  response.send("Neill's Quote Server!  Ask me for /quotes/random, or /quotes");
+  response.send(
+    "Fikret's Quote Server!  Ask me for /quotes/random, /quotes or /quotes/search?term=(something)"
+  );
 });
 
 //START OF YOUR CODE...
+app.get("/quotes", (req, res) => {
+  res.json({ quotes });
+});
 
+app.get("/quotes/random", (req, res) => {
+  const randomQuote = pickFromArray(quotes);
+  res.json({ randomQuote });
+});
+
+app.get("/quotes/search", (req, res) => {
+  console.log(req.query);
+  const searchTerm = req.query.term.toLowerCase();
+
+  const filteredQuotes = quotes.filter(
+    (quoteObject) =>
+      quoteObject.content.toLowerCase().includes(searchTerm) ||
+      quoteObject.author.toLowerCase().includes(searchTerm)
+  );
+  res.json({ filteredQuotes });
+});
+
+app.get("/echo", (req, res) => {
+  res.json(req.query.word);
+});
 //...END OF YOUR CODE
 
-//You can use this function to pick one element at random from a given array
-//example: pickFromArray([1,2,3,4]), or
-//example: pickFromArray(myContactsArray)
-//
-const pickFromArray = (arrayofQuotes) =>
-  arrayofQuotes[Math.floor(Math.random() * arrayofQuotes.length)];
+const pickFromArray = (arrayOfQuotes) =>
+  arrayOfQuotes[Math.floor(Math.random() * arrayOfQuotes.length)];
 
-//Start our server so that it listens for HTTP requests!
 const listener = app.listen(3001, () => {
-  console.log("Your app is listening on port " + listener.address().port);
+  console.log("Your app is listening on port 3001");
 });
