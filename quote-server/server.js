@@ -1,9 +1,12 @@
 import express from "express";
 import crypto from "crypto";
+import cors from "cors";
 
 const app = express();
 
 let quotes = [];
+
+app.use(cors());
 
 app.use(async (req, res, next) => {
   const response = await fetch("https://api.quotable.io/quotes?limit=150");
