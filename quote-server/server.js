@@ -13,7 +13,7 @@ app.use(async (req, res, next) => {
 
 app.get("/", (req, res) => {
   res.send(
-    "Fikret's Quote Server!  Ask me for /quotes/random, /quotes or /quotes/search?term=(something)"
+    "Fikret's Quote Server! Ask me for /quotes, /quotes/random or /quotes/search?term=(something)"
   );
 });
 
