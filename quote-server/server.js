@@ -1,4 +1,5 @@
 import express from "express";
+import crypto from "crypto";
 
 const app = express();
 
@@ -44,8 +45,11 @@ app.get("/echo", (req, res) => {
 });
 //...END OF YOUR CODE
 
-const pickFromArray = (arrayOfQuotes) =>
-  arrayOfQuotes[Math.floor(Math.random() * arrayOfQuotes.length)];
+const pickFromArray = (arrayOfQuotes) => {
+  const bytes = crypto.randomBytes(4);
+  const randomIndex = bytes.readUInt32LE(0) % arrayOfQuotes.length;
+  return arrayOfQuotes[randomIndex];
+};
 
 app.listen(3001, () => {
   console.log("Your app is listening on port 3001");
