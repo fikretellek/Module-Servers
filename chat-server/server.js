@@ -29,6 +29,16 @@ app.get("/", (req, res) => {
 
 app.post("/messages", (req, res) => {
   const newMessage = req.body;
+  if (
+    !newMessage.hasOwnProperty("text") ||
+    !newMessage.hasOwnProperty("from") ||
+    newMessage.from === "" ||
+    newMessage.text === "" ||
+    typeof newMessage.text != "string" ||
+    typeof newMessage.from != "string"
+  ) {
+    res.sendStatus(400).send("wrong input");
+  }
   newMessage["id"] = messages[messages.length - 1].id + 1;
   messages.push(newMessage);
   res.json(messages);
