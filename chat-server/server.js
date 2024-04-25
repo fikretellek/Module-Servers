@@ -1,5 +1,5 @@
 process.env.PORT = process.env.PORT || 9090;
-import express, { response } from "express";
+import express from "express";
 import cors from "cors";
 import path from "path";
 import bodyParser from "body-parser";
@@ -40,6 +40,7 @@ app.post("/messages", (req, res) => {
     res.sendStatus(400).send("wrong input");
   }
   newMessage["id"] = messages[messages.length - 1].id + 1;
+  newMessage["timeSent"] = new Date();
   messages.push(newMessage);
   res.json(messages);
 });
