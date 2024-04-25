@@ -57,8 +57,8 @@ app.get("/messages/id/:id", (req, res) => {
 
 app.delete("/messages/id/:id", (req, res) => {
   const messageId = req.params.id;
-  const deleteId = messages.find((message) => message.id == messageId);
-  messages.splice(messages.indexOf(deleteId), 1);
+  const deleteMessage = messages.find((message) => message.id == messageId);
+  messages.splice(messages.indexOf(deleteMessage), 1);
   res.json(messages);
 });
 
@@ -73,6 +73,18 @@ app.get("/messages/search", (req, res) => {
 app.get("/messages/latest", (req, res) => {
   const latestMessages = messages.slice(-10);
   res.json(latestMessages);
+});
+
+app.patch("/messages/id/:id", (req, res) => {
+  console.log(req.params.id);
+  const messageId = req.params.id;
+  const updatedInfo = req.body;
+  const patchMessage = messages.find((message) => message.id == messageId);
+  messages[messages.indexOf(patchMessage)] = {
+    ...messages[messages.indexOf(patchMessage)],
+    ...updatedInfo,
+  };
+  res.json(messages);
 });
 
 app.listen(process.env.PORT, () => {
