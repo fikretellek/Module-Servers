@@ -1,4 +1,4 @@
-process.env.PORT = process.env.PORT || 3001;
+process.env.PORT = process.env.PORT || 9090;
 import express, { response } from "express";
 import cors from "cors";
 import path from "path";
@@ -48,17 +48,30 @@ app.get("/messages", (req, res) => {
   res.json(messages);
 });
 
-app.get("/messages/:id", (req, res) => {
+app.get("/messages/id/:id", (req, res) => {
   const messageId = req.params.id;
   const searchedMessage = messages.find((message) => message.id == messageId);
   res.json(searchedMessage);
 });
 
-app.delete("/messages/:id", (req, res) => {
+app.delete("/messages/id/:id", (req, res) => {
   const messageId = req.params.id;
   const deleteId = messages.find((message) => message.id == messageId);
   messages.splice(messages.indexOf(deleteId), 1);
   res.json(messages);
+});
+
+app.get("/messages/search", (req, res) => {
+  const searchInput = req.query.text.toLowerCase();
+  const filteredMessages = messages.filter((message) =>
+    message.text.toLowerCase().includes(searchInput)
+  );
+  res.json(filteredMessages);
+});
+
+app.get("/messages/latest", (req, res) => {
+  const latestMessages = messages.slice(-10);
+  res.json(latestMessages);
 });
 
 app.listen(process.env.PORT, () => {
