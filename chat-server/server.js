@@ -1,12 +1,14 @@
-process.env.PORT = process.env.PORT || 9090;
-import express from "express";
+process.env.PORT = process.env.PORT || 3001;
+import express, { response } from "express";
 import cors from "cors";
 import path from "path";
+import bodyParser from "body-parser";
 import { fileURLToPath } from "url";
 
 const app = express();
 
 app.use(cors());
+app.use(bodyParser.json());
 
 // Get __dirname in ES module
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -21,8 +23,32 @@ const welcomeMessage = {
 //We will start with one message in the array.
 const messages = [welcomeMessage];
 
-app.get("/", (request, response) => {
-  response.sendFile(__dirname + "/index.html");
+app.get("/", (req, res) => {
+  res.sendFile(__dirname + "/index.html");
+});
+
+app.post("/messages", (req, res) => {
+  const newMessage = req.body;
+  newMessage["id"] = messages[messages.length - 1].id + 1;
+  messages.push(newMessage);
+  res.json(messages);
+});
+
+app.get("/messages", (req, res) => {
+  res.json(messages);
+});
+
+app.get("/messages/:id", (req, res) => {
+  const messageId = req.params.id;
+  const searchedMessage = messages.find((message) => message.id == messageId);
+  res.json(searchedMessage);
+});
+
+app.delete("/messages/:id", (req, res) => {
+  const messageId = req.params.id;
+  const deleteId = messages.find((message) => message.id == messageId);
+  messages.splice(messages.indexOf(deleteId), 1);
+  res.json(messages);
 });
 
 app.listen(process.env.PORT, () => {
