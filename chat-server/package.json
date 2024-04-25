@@ -24,5 +24,8 @@
     "node",
     "glitch",
     "express"
-  ]
+  ],
+  "devDependencies": {
+    "yarn": "^1.22.22"
+  }
 }
