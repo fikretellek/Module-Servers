@@ -16,13 +16,14 @@ function App() {
   }
 
   function submitUsername() {
-    console.log(newMessage);
     newMessage.from = document.getElementById("username").value;
-    console.log(newMessage);
-  }
 
-  function setText() {
-    fetch("https://module-servers.onrender.com/messages");
+    newMessage.text = document.getElementById("message-box").value;
+
+    fetch("https://module-servers.onrender.com/messages", {
+      method: "POST",
+      body: newMessage.json(),
+    });
   }
 
   return (
@@ -45,14 +46,7 @@ function App() {
             );
           })}
         </div>
-        <textarea
-          name=""
-          id="message-box"
-          cols="30"
-          rows="5"
-          placeholder="type here"
-          onSubmit={setText}
-        ></textarea>
+        <textarea name="" id="message-box" cols="30" rows="5" placeholder="type here"></textarea>
       </div>
     </>
   );
