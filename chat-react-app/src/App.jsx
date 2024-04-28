@@ -6,7 +6,8 @@ function App() {
   const newMessage = { from: "", text: "" };
 
   useEffect(() => {
-    getMessages();
+    const interval = setInterval(() => getMessages(), 10000);
+    return () => clearInterval(interval);
   }, []);
 
   function getMessages() {
