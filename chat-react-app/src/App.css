@@ -58,7 +58,8 @@
 }
 
 h1 {
-  padding-left: 30px;
+  padding: 0px 10px;
+  color: white;
 }
 #user-box {
   display: flex;
@@ -73,15 +74,20 @@ h1 {
   width: 69%;
   height: 50px;
   border: 0;
-  border-radius: 20px 5px 5px 10px;
+  border-radius: 5px 20px 10px 5px;
   font-size: 1em;
-  text-indent: 30px;
+  text-indent: 20px;
+  max-width: 200px;
 }
 
-.user-button {
+.send-button {
   width: 30%;
   height: 50px;
-  border-radius: 5px 20px 10px 5px;
+  border-radius: 5px 5px 15px 5px;
+  background-color: rgb(66, 113, 244);
+  color: white;
+  border: none;
+  margin: 0px 10px 0px 0px;
 }
 
 #message-box {
@@ -89,16 +95,22 @@ h1 {
   /* background-color: #213547; */
   background-color: white;
   border-radius: 10px 10px 20px 20px;
+  display: flex;
+  gap: 5px;
+  flex-direction: row-reverse;
+  justify-content: center;
+  align-items: center;
 }
 
 #messages {
-  flex-shrink: 1;
+  /* flex-shrink: 1;
   flex-basis: 0;
-  flex-grow: 1;
+  flex-grow: 1; */
   flex: 1 1 0;
   display: flex;
   flex-direction: column-reverse;
-  overflow: scroll;
+  overflow-y: scroll;
+  gap: 5px;
 }
 
 .message {
@@ -108,5 +120,24 @@ h1 {
   max-width: 70vw;
   width: min-content;
   background-color: white;
-  margin: 5px 0px;
+}
+.message.right {
+  align-self: flex-end;
+}
+
+.from {
+  display: block;
+  opacity: 0.5;
+  font-size: 0.7em;
+  width: max-content;
+}
+
+#message-area {
+  width: calc(70% - 10px);
+  height: 52px;
+  border: none;
+  border-radius: 5px 5px 5px 15px;
+  background-color: white;
+  margin: 5px 5px;
+  padding: 5px;
 }

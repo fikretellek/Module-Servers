@@ -12,41 +12,51 @@ function App() {
   function getMessages() {
     fetch("https://module-servers.onrender.com/messages")
       .then((response) => response.json())
-      .then((data) => setMessages(data));
+      .then((data) => setMessages(data.slice().reverse()));
   }
 
-  function submitUsername() {
-    newMessage.from = document.getElementById("username").value;
+  function sendMessage() {
+    newMessage.from = document.getElementById("name").value;
 
-    newMessage.text = document.getElementById("message-box").value;
-
+    newMessage.text = document.getElementById("message-area").value;
+    document.getElementById("message-area").value = "";
     fetch("https://module-servers.onrender.com/messages", {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify(newMessage),
-    });
+    })
+      .then((response) => response.json())
+      .then((data) => setMessages(data.slice().reverse()));
   }
 
   return (
     <>
-      <h1>MESSAGES</h1>
-
       <div id="chat-box">
         <div id="user-box">
-          <input id="username" className="user-input" type="text" placeholder="enter username" />
-          <button className="user-button" onClick={submitUsername}>
-            save
-          </button>
+          <h1>MESSAGES</h1>
+          <input id="name" className="user-input" type="text" placeholder="enter name" />
         </div>
         <div id="messages">
           {messages.map((message, index) => {
+            const currentUser = document.getElementById("name").value;
+            const classname = message.from === currentUser ? "message right" : "message";
+
             return (
-              <p key={`${message.id} ${index}`} className="message">
+              <p key={`${message.id} ${index}`} className={classname}>
+                <span className="from">from: {message.from}</span>
                 {message.text}
               </p>
             );
           })}
         </div>
-        <textarea name="" id="message-box" cols="30" rows="5" placeholder="type here"></textarea>
+        <div id="message-box">
+          <button className="send-button" onClick={sendMessage}>
+            send
+          </button>
+          <textarea name="" id="message-area" rows="4" placeholder="type here"></textarea>
+        </div>
       </div>
     </>
   );
