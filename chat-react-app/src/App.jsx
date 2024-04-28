@@ -22,7 +22,7 @@ function App() {
 
     fetch("https://module-servers.onrender.com/messages", {
       method: "POST",
-      body: newMessage.json(),
+      body: JSON.stringify(newMessage),
     });
   }
 
