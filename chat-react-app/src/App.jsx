@@ -1,35 +1,61 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from "react";
+import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [messages, setMessages] = useState([]);
+  const newMessage = { from: "", text: "" };
+
+  useEffect(() => {
+    getMessages();
+  }, []);
+
+  function getMessages() {
+    fetch("https://module-servers.onrender.com/messages")
+      .then((response) => response.json())
+      .then((data) => setMessages(data));
+  }
+
+  function submitUsername() {
+    console.log(newMessage);
+    newMessage.from = document.getElementById("username").value;
+    console.log(newMessage);
+  }
+
+  function setText() {
+    fetch("https://module-servers.onrender.com/messages");
+  }
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <h1>MESSAGES</h1>
+
+      <div id="chat-box">
+        <div id="user-box">
+          <input id="username" className="user-input" type="text" placeholder="enter username" />
+          <button className="user-button" onClick={submitUsername}>
+            save
+          </button>
+        </div>
+        <div id="messages">
+          {messages.map((message, index) => {
+            return (
+              <p key={`${message.id} ${index}`} className="message">
+                {message.text}
+              </p>
+            );
+          })}
+        </div>
+        <textarea
+          name=""
+          id="message-box"
+          cols="30"
+          rows="5"
+          placeholder="type here"
+          onSubmit={setText}
+        ></textarea>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
