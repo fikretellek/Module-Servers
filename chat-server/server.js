@@ -74,8 +74,9 @@ app.get("/messages/search", (req, res) => {
   res.json(filteredMessages);
 });
 
-app.get("/messages/latest", (req, res) => {
-  const latestMessages = messages.slice(-10);
+app.get("/messages/latest/:length", (req, res) => {
+  const length = req.params.length;
+  const latestMessages = messages.slice(-length);
   res.json(latestMessages);
 });
 
