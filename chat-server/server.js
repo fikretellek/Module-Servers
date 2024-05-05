@@ -53,19 +53,6 @@ app.get("/messages", (req, res) => {
   res.json(messages);
 });
 
-app.get("/messages/id/:id", (req, res) => {
-  const messageId = req.params.id;
-  const searchedMessage = messages.find((message) => message.id == messageId);
-  res.json(searchedMessage);
-});
-
-app.delete("/messages/id/:id", (req, res) => {
-  const messageId = req.params.id;
-  const deleteMessage = messages.find((message) => message.id == messageId);
-  messages.splice(messages.indexOf(deleteMessage), 1);
-  res.json(messages);
-});
-
 app.get("/messages/search", (req, res) => {
   const searchInput = req.query.text.toLowerCase();
   const filteredMessages = messages.filter((message) =>
@@ -80,7 +67,20 @@ app.get("/messages/latest/:length", (req, res) => {
   res.json(latestMessages);
 });
 
-app.patch("/messages/id/:id", (req, res) => {
+app.get("/messages/:id", (req, res) => {
+  const messageId = req.params.id;
+  const searchedMessage = messages.find((message) => message.id == messageId);
+  res.json(searchedMessage);
+});
+
+app.delete("/messages/:id", (req, res) => {
+  const messageId = req.params.id;
+  const deleteMessage = messages.find((message) => message.id == messageId);
+  messages.splice(messages.indexOf(deleteMessage), 1);
+  res.json(messages);
+});
+
+app.patch("/messages/:id", (req, res) => {
   console.log(req.params.id);
   const messageId = req.params.id;
   const updatedInfo = req.body;
