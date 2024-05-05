@@ -4,16 +4,15 @@ import cors from "cors";
 
 const app = express();
 
-let quotes = [];
-
 app.use(cors());
 
-app.use(async (req, res, next) => {
+let quotes = [];
+
+(async () => {
   const response = await fetch("https://api.quotable.io/quotes?limit=150");
   const data = await response.json();
   quotes = data.results;
-  next();
-});
+})();
 
 app.get("/", (req, res) => {
   res.send(
