@@ -3,7 +3,8 @@ import "./App.css";
 
 function App() {
   const [messages, setMessages] = useState([]);
-  const newMessage = { from: "", text: "" };
+  const [currentMessage, setNewMessage] = useState("");
+  const [currentUser, setNewUser] = useState("");
 
   useEffect(() => {
     getMessages();
@@ -18,9 +19,8 @@ function App() {
   }
 
   function sendMessage() {
-    newMessage.from = document.getElementById("name").value;
+    const newMessage = { from: currentUser, text: currentMessage };
 
-    newMessage.text = document.getElementById("message-area").value;
     document.getElementById("message-area").value = "";
     fetch("https://module-servers.onrender.com/messages", {
       method: "POST",
@@ -33,31 +33,52 @@ function App() {
       .then((data) => setMessages(data.slice().reverse()));
   }
 
+  function generateMessages(message, index) {
+    const user = document.getElementById("name").value;
+    return (
+      <p
+        key={`${message.id} ${index}`}
+        className={message.from === user ? "message right" : "message"}
+      >
+        <span className="from">from: {message.from}</span>
+        {message.text}
+      </p>
+    );
+  }
+  function setCurrentUser(e) {
+    setNewUser(e.target.value);
+  }
+  function setCurrentMessage(e) {
+    setNewMessage(e.target.value);
+  }
+
   return (
     <>
       <div id="chat-box">
         <div id="user-box">
           <h1>MESSAGES</h1>
-          <input id="name" className="user-input" type="text" placeholder="enter name" />
+          <input
+            id="name"
+            className="user-input"
+            type="text"
+            placeholder="enter name"
+            onKeyUp={setCurrentUser}
+          />
         </div>
         <div id="messages">
-          {messages.map((message, index) => {
-            const currentUser = document.getElementById("name").value;
-            const classname = message.from === currentUser ? "message right" : "message";
-
-            return (
-              <p key={`${message.id} ${index}`} className={classname}>
-                <span className="from">from: {message.from}</span>
-                {message.text}
-              </p>
-            );
-          })}
+          {messages.map((message, index) => generateMessages(message, index))}
         </div>
         <div id="message-box">
           <button className="send-button" onClick={sendMessage}>
             send
           </button>
-          <textarea name="" id="message-area" rows="4" placeholder="type here"></textarea>
+          <textarea
+            name=""
+            id="message-area"
+            rows="4"
+            placeholder="type here"
+            onKeyUp={setCurrentMessage}
+          ></textarea>
         </div>
       </div>
     </>
