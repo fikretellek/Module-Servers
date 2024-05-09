@@ -16,7 +16,11 @@ function App() {
     };
 
     socket.onmessage = (event) => {
-      const receivedMessage = JSON.parse(event.data);
+      console.log(event.data);
+      const receivedData = JSON.parse(event.data);
+
+      const receivedMessage =
+        typeof receivedData === "object" ? receivedData : JSON.parse(receivedData);
 
       setMessages((previousMessages) => [...previousMessages, receivedMessage]);
     };
@@ -57,12 +61,12 @@ function App() {
     ws.send(JSON.stringify(newMessage));
   }
 
-  function generateMessages(message, index) {
-    const user = document.getElementById("name").value;
+  function generateMessage(message, index) {
+    console.log(messages);
     return (
       <p
         key={`${message.id} ${index}`}
-        className={message.from === user ? "message right" : "message"}
+        className={message.from === currentUser ? "message right" : "message"}
       >
         <span className="from">from: {message.from}</span>
         {message.text}
@@ -92,7 +96,7 @@ function App() {
           />
         </div>
         <div id="messages">
-          {messages.map((message, index) => generateMessages(message, index))}
+          {messages.reverse().map((message, index) => generateMessage(message, index))}
         </div>
         <div id="message-box">
           <button className="send-button" onClick={sendMessage}>
