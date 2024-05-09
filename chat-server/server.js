@@ -56,9 +56,10 @@ wss.on("connection", (ws) => {
     messages.push(parsedMessage);
 
     wss.clients.forEach((client) => {
-      if (client.readyState === WebSocket.OPEN) {
-        client.send(message);
-      }
+      // if (client.readyState === WebSocket.OPEN) {
+      //   client.send(message);
+      // }
+      client.send(message);
     });
   });
 });
