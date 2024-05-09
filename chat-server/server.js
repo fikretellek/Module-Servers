@@ -41,9 +41,9 @@ app.get("/", (req, res) => {
 
 //websocket
 
-const wsServer = new WebSocket.Server({ noServer: true });
+const wss = new WebSocket.Server({ noServer: true });
 
-wsServer.on("connection", (ws) => {
+wss.on("connection", (ws) => {
   console.log("New WebSocket Connection");
 
   messages.forEach((message) => ws.send(JSON.stringify(message)));
@@ -55,7 +55,7 @@ wsServer.on("connection", (ws) => {
 
     messages.push(parsedMessage);
 
-    wsServer.clients.forEach((client) => {
+    wss.clients.forEach((client) => {
       if (client.readyState === WebSocket.OPEN) {
         client.send(message);
       }
@@ -125,7 +125,7 @@ const server = app.listen(process.env.PORT, () => {
 });
 
 server.on("upgrade", (request, socket, head) => {
-  wsServer.handleUpgrade(request, socket, head, (ws) => {
-    wsServer.emit("connection", ws, request);
+  wss.handleUpgrade(request, socket, head, (ws) => {
+    wss.emit("connection", ws, request);
   });
 });
