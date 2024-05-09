@@ -48,10 +48,10 @@ wss.on("connection", (ws) => {
 
   messages.forEach((message) => ws.send(JSON.stringify(message)));
 
-  ws.on("message", (message) => {
-    console.log("Received message form client:", message);
+  ws.on("message", (messageBuffer) => {
+    console.log("Received message form client:", messageBuffer);
 
-    const parsedMessage = JSON.parse(message.toString());
+    const parsedMessage = JSON.parse(messageBuffer.toString());
 
     messages.push(parsedMessage);
 
@@ -59,7 +59,7 @@ wss.on("connection", (ws) => {
       // if (client.readyState === WebSocket.OPEN) {
       //   client.send(message);
       // }
-      client.send(JSON.stringify(message));
+      client.send(JSON.stringify(parsedMessage));
     });
   });
 });
