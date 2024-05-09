@@ -41,7 +41,7 @@ app.get("/", (req, res) => {
 
 //websocket
 
-const wss = new WebSocket.Server({ noServer: true });
+const wss = new WebSocketServer({ noServer: true });
 
 wss.on("connection", (ws) => {
   console.log("New WebSocket Connection");
