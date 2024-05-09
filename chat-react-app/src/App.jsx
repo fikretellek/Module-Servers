@@ -16,11 +16,13 @@ function App() {
     };
 
     socket.onmessage = (event) => {
-      console.log(event.data);
+      console.log("event:", event);
+      console.log("event.data:", event.data);
       const receivedData = JSON.parse(event.data);
-
+      console.log("receivedData:", receivedData);
       const receivedMessage =
         typeof receivedData === "object" ? receivedData : JSON.parse(receivedData);
+      console.log("receivedMessage:", receivedMessage);
 
       setMessages((previousMessages) => [...previousMessages, receivedMessage]);
     };
@@ -62,7 +64,6 @@ function App() {
   }
 
   function generateMessage(message, index) {
-    console.log(messages);
     return (
       <p
         key={`${message.id} ${index}`}
