@@ -15,7 +15,8 @@
     "cors": "^2.8.5",
     "express": "^4.19.2",
     "nodemon": "^3.1.0",
-    "websocket": "^1.0.34"
+    "websocket": "^1.0.34",
+    "ws": "^8.17.0"
   },
   "repository": {
     "url": "https://glitch.com/edit/#!/hello-express"
