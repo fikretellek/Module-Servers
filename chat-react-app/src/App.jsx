@@ -3,8 +3,8 @@ import "./App.css";
 
 function App() {
   const [messages, setMessages] = useState([]);
-  const [currentMessage, setNewMessage] = useState("");
-  const [currentUser, setNewUser] = useState("");
+  const [newMessage, setNewMessage] = useState("");
+  const [newUser, setNewUser] = useState("");
   const [ws, setWs] = useState(null);
 
   useEffect(() => {
@@ -18,19 +18,15 @@ function App() {
     socket.onmessage = (event) => {
       console.log("event:", event);
       console.log("event.data:", event.data);
-      const receivedData = JSON.parse(event.data);
-      console.log("receivedData:", receivedData);
-      const receivedMessage =
-        typeof receivedData === "object" ? receivedData : JSON.parse(receivedData);
+      const receivedMessage = JSON.parse(event.data);
+
       console.log("receivedMessage:", receivedMessage);
 
       setMessages((previousMessages) => [...previousMessages, receivedMessage]);
     };
 
     return () => {
-      if (socket.readyState === 1) {
-        socket.close();
-      }
+      socket.close();
     };
   }, []);
 
@@ -47,8 +43,8 @@ function App() {
   // }
 
   function sendMessage() {
-    const newMessage = { from: currentUser, text: currentMessage };
-    document.getElementById("message-area").value = "";
+    const messageOBJ = { from: newUser, text: newMessage };
+    setNewMessage("");
 
     // fetch("https://module-servers.onrender.com/messages", {
     //   method: "POST",
@@ -60,27 +56,19 @@ function App() {
     //   .then((response) => response.json())
     //   .then((data) => setMessages(data.slice().reverse()));
 
-    ws.send(JSON.stringify(newMessage));
+    ws.send(JSON.stringify(messageOBJ));
   }
 
   function generateMessage(message, index) {
     return (
       <p
         key={`${message.id} ${index}`}
-        className={message.from === currentUser ? "message right" : "message"}
+        className={message.from === newUser ? "message right" : "message"}
       >
         <span className="from">from: {message.from}</span>
         {message.text}
       </p>
     );
-  }
-
-  function setCurrentUser(e) {
-    setNewUser(e.target.value);
-  }
-
-  function setCurrentMessage(e) {
-    setNewMessage(e.target.value);
   }
 
   return (
@@ -89,26 +77,28 @@ function App() {
         <div id="user-box">
           <h1>MESSAGES</h1>
           <input
+            value={newUser}
             id="name"
             className="user-input"
             type="text"
             placeholder="enter name"
-            onKeyUp={setCurrentUser}
+            onChange={(e) => setNewUser(e.target.value)}
           />
         </div>
         <div id="messages">
-          {messages.reverse().map((message, index) => generateMessage(message, index))}
+          {messages.toReversed().map((message, index) => generateMessage(message, index))}
         </div>
         <div id="message-box">
           <button className="send-button" onClick={sendMessage}>
             send
           </button>
           <textarea
+            value={newMessage}
             name=""
             id="message-area"
             rows="4"
             placeholder="type here"
-            onKeyUp={setCurrentMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
           ></textarea>
         </div>
       </div>
