@@ -59,7 +59,7 @@ wss.on("connection", (ws) => {
       // if (client.readyState === WebSocket.OPEN) {
       //   client.send(message);
       // }
-      client.send(message);
+      client.send(JSON.stringify(message));
     });
   });
 });
