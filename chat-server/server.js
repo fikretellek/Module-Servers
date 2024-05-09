@@ -4,7 +4,7 @@ import cors from "cors";
 import path from "path";
 import bodyParser from "body-parser";
 import { fileURLToPath } from "url";
-import WebSocket from "ws";
+import { WebSocketServer } from "ws";
 
 const app = express();
 
@@ -41,7 +41,7 @@ app.get("/", (req, res) => {
 
 //websocket
 
-const wss = new WebSocket.Server({ noServer: true });
+const wss = new WebSocketServer({ noServer: true });
 
 wss.on("connection", (ws) => {
   console.log("New WebSocket Connection");
