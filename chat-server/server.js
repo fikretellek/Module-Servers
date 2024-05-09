@@ -4,6 +4,7 @@ import cors from "cors";
 import path from "path";
 import bodyParser from "body-parser";
 import { fileURLToPath } from "url";
+import WebSocket from "ws";
 
 const app = express();
 
@@ -15,8 +16,8 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const welcomeMessage = {
   id: 0,
-  from: "Bart",
-  text: "Welcome to CYF chat system!",
+  from: "user",
+  text: "send your first message!",
 };
 
 function validateMessage(newMessage) {
@@ -37,6 +38,32 @@ const messages = [welcomeMessage];
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
+
+//websocket
+
+const wServer = new WebSocket.Server({ noServer: true });
+
+wServer.on("connection", (ws) => {
+  console.log("New WebSocket Connection");
+
+  messages.forEach((message) => ws.send(JSON.stringify(message)));
+
+  ws.on("message", (message) => {
+    console.log("Received message form client:", message);
+
+    const parsedMessage = JSON.parse(message);
+
+    messages.push(parsedMessage);
+
+    wServer.clients.forEach((client) => {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(message);
+      }
+    });
+  });
+});
+
+//route methods
 
 app.post("/messages", (req, res) => {
   const newMessage = req.body;
@@ -92,6 +119,13 @@ app.patch("/messages/:id", (req, res) => {
   res.json(messages);
 });
 
-app.listen(process.env.PORT, () => {
+// upgrade https server to websocket server
+const server = app.listen(process.env.PORT, () => {
   console.log(`listening on PORT ${process.env.PORT}...`);
+});
+
+server.on("upgrade", (request, socket, head) => {
+  wss.handleUpgrade(request, socket, head, (ws) => {
+    wss.emit("connection", ws, request);
+  });
 });
