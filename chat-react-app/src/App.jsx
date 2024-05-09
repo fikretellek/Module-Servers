@@ -22,7 +22,9 @@ function App() {
     };
 
     return () => {
-      socket.close();
+      if (socket.readyState === 1) {
+        socket.close();
+      }
     };
   }, []);
 
