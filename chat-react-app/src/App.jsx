@@ -5,32 +5,54 @@ function App() {
   const [messages, setMessages] = useState([]);
   const [currentMessage, setNewMessage] = useState("");
   const [currentUser, setNewUser] = useState("");
+  const [ws, setWs] = useState(null);
 
   useEffect(() => {
-    getMessages();
-    const interval = setInterval(() => getMessages(), 10000);
-    return () => clearInterval(interval);
+    const socket = new WebSocket("ws://https://module-servers.onrender.com");
+    setWs(socket);
+
+    socket.onopen = () => {
+      console.log("websocket connected");
+    };
+
+    socket.onmessage = (event) => {
+      const receivedMessage = JSON.parse(event.data);
+
+      setMessages((previousMessages) => [...previousMessages, receivedMessage]);
+    };
+
+    return () => {
+      socket.close();
+    };
   }, []);
 
-  function getMessages() {
-    fetch("https://module-servers.onrender.com/messages")
-      .then((response) => response.json())
-      .then((data) => setMessages(data.slice().reverse()));
-  }
+  // useEffect(() => {
+  //   getMessages();
+  //   const interval = setInterval(() => getMessages(), 10000);
+  //   return () => clearInterval(interval);
+  // }, []);
+
+  // function getMessages() {
+  //   fetch("https://module-servers.onrender.com/messages")
+  //     .then((response) => response.json())
+  //     .then((data) => setMessages(data.slice().reverse()));
+  // }
 
   function sendMessage() {
     const newMessage = { from: currentUser, text: currentMessage };
-
     document.getElementById("message-area").value = "";
-    fetch("https://module-servers.onrender.com/messages", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(newMessage),
-    })
-      .then((response) => response.json())
-      .then((data) => setMessages(data.slice().reverse()));
+
+    // fetch("https://module-servers.onrender.com/messages", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(newMessage),
+    // })
+    //   .then((response) => response.json())
+    //   .then((data) => setMessages(data.slice().reverse()));
+
+    ws.send(JSON.stringify(newMessage));
   }
 
   function generateMessages(message, index) {
@@ -45,9 +67,11 @@ function App() {
       </p>
     );
   }
+
   function setCurrentUser(e) {
     setNewUser(e.target.value);
   }
+
   function setCurrentMessage(e) {
     setNewMessage(e.target.value);
   }
