@@ -51,7 +51,7 @@ wss.on("connection", (ws) => {
   ws.on("message", (message) => {
     console.log("Received message form client:", message);
 
-    const parsedMessage = JSON.parse(message);
+    const parsedMessage = JSON.parse(message.toString());
 
     messages.push(parsedMessage);
 
@@ -59,7 +59,7 @@ wss.on("connection", (ws) => {
       // if (client.readyState === WebSocket.OPEN) {
       //   client.send(message);
       // }
-      client.send(JSON.stringify(message));
+      client.send(JSON.stringify(message.toString()));
     });
   });
 });
