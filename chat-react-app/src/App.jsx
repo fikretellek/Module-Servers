@@ -8,7 +8,7 @@ function App() {
   const [ws, setWs] = useState(null);
 
   useEffect(() => {
-    const socket = new WebSocket("ws://https://module-servers.onrender.com");
+    const socket = new WebSocket("wss://module-servers.onrender.com");
     setWs(socket);
 
     socket.onopen = () => {
