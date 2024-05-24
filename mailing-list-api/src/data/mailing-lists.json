@@ -1,4 +1,17 @@
 {
-  "staff": ["talea@techtonica.org", "michelle@techtonica.org"],
-  "cohort-h1-2020": ["ali@techtonica.org", "humail@techtonica.org", "khadar@techtonica.org"]
+  "staff": [
+    "talea@techtonica.org",
+    "michelle@techtonica.org"
+  ],
+  "cohort-h1-2020": [
+    "ali@techtonica.org",
+    "humail@techtonica.org",
+    "khadar@techtonica.org"
+  ],
+  "my-new-list": [
+    "me@me.com.uk"
+  ],
+  "test1": [
+    "me@me.com"
+  ]
 }

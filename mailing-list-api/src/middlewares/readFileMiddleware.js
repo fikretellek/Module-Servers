@@ -5,7 +5,8 @@ const readFileMiddleware = (absoluteFilePath) => (req, res, next) => {
     if (err) {
       return next(err);
     }
-    req.fileContent = JSON.parse(data);
+    const lists = new Map(Object.entries(JSON.parse(data)));
+    req.fileContent = lists;
     next();
   });
 };
