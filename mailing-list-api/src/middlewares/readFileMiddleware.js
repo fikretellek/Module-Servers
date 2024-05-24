@@ -5,7 +5,7 @@ const readFileMiddleware = (absoluteFilePath) => (req, res, next) => {
     if (err) {
       return next(err);
     }
-    req.fileContent = data;
+    req.fileContent = JSON.parse(data);
     next();
   });
 };

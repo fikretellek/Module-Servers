@@ -3,14 +3,14 @@ import { Router } from "express";
 const router = Router();
 
 router.get("/", (req, res) => {
-  console.log();
-  const data = Object.keys(JSON.parse(req.fileContent));
+  const lists = new Map(Object.entries(req.fileContent));
+  const keys = Array.from(lists.keys());
 
-  if (data.lenght === 0) {
+  if (lists.size === 0) {
     res.status(200).json([]);
   }
 
-  res.status(200).json(data);
+  res.status(200).json(keys);
 });
 
 export default router;
